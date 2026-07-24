@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Home view
     const tmplSelect = document.getElementById('template-select');
     const autoDateToggle = document.getElementById('auto-date-toggle');
+    const msgSubject = document.getElementById('message-subject');
     const msgBody = document.getElementById('message-body');
     const btnSend = document.getElementById('btn-send');
     const sendToLine = document.getElementById('send-to-line');
@@ -245,6 +246,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // === Sending Logic ===
     btnSend.addEventListener('click', async () => {
         const message = msgBody.value.trim();
+        const subject = msgSubject.value.trim() || '連絡事項';
+
         if(!message) {
             alert('メッセージ本文が空です。');
             return;
@@ -270,6 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    subject: subject,
                     message: message,
                     destinations: settings.destEmails,
                     email_config: {

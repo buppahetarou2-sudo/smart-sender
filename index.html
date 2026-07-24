@@ -43,6 +43,15 @@
                 </div>
 
                 <div class="form-group">
+                    <label>件名（メール用）</label>
+                    <input type="text" id="message-subject" list="subject-options" placeholder="件名を選択または手入力..." value="明日の出勤時間">
+                    <datalist id="subject-options">
+                        <option value="明日の出勤時間"></option>
+                        <option value="本日の出勤時間"></option>
+                    </datalist>
+                </div>
+
+                <div class="form-group">
                     <label>メッセージ本文</label>
                     <textarea id="message-body" rows="8" placeholder="メッセージを入力してください..."></textarea>
                 </div>
