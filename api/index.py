@@ -13,6 +13,7 @@ def send_message():
     data = request.json
     
     message = data.get('message', '')
+    subject = data.get('subject', '連絡事項')
     destinations = data.get('destinations', [])
     email_config = data.get('email_config', {})
     line_token = data.get('line_token', '')
@@ -27,7 +28,7 @@ def send_message():
             msg = MIMEMultipart()
             msg['From'] = email_config['email']
             msg['To'] = email_config['email']
-            msg['Subject'] = "連絡事項"
+            msg['Subject'] = subject
             
             msg.attach(MIMEText(message, 'plain'))
             
