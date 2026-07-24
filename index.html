@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>一斉送信アプリ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="glass-nav">
+            <h1 class="nav-title">SmartSender</h1>
+            <div class="nav-links">
+                <button id="nav-home" class="nav-btn active">ホーム</button>
+                <button id="nav-templates" class="nav-btn">定型文</button>
+                <button id="nav-history" class="nav-btn">履歴</button>
+                <button id="nav-settings" class="nav-btn">設定</button>
+            </div>
+        </nav>
+
+        <!-- Home View -->
+        <main id="view-home" class="view active-view fade-in">
+            <div class="card">
+                <h2>メッセージ作成</h2>
+                
+                <div class="form-group">
+                    <label>テンプレート呼び出し</label>
+                    <select id="template-select">
+                        <option value="">-- 選択してください --</option>
+                    </select>
+                </div>
+
+                <div class="form-group toggle-group">
+                    <label for="auto-date-toggle">翌日の日付を自動挿入</label>
+                    <label class="switch">
+                        <input type="checkbox" id="auto-date-toggle" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>メッセージ本文</label>
+                    <textarea id="message-body" rows="8" placeholder="メッセージを入力してください..."></textarea>
+                </div>
+
+                <div class="send-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="send-to-line" checked>
+                        LINEに送信
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="send-to-email" checked>
+                        メールに送信
+                    </label>
+                </div>
+
+                <button id="btn-send" class="btn-primary">
+                    <span class="btn-text">一斉送信する</span>
+                    <span class="loader hidden"></span>
+                </button>
+                <div id="send-status" class="status-msg"></div>
+            </div>
+        </main>
+
+        <!-- Templates View -->
+        <main id="view-templates" class="view fade-in">
+            <div class="card">
+                <h2>定型文の管理</h2>
+                
+                <div class="form-group">
+                    <label>タイトル</label>
+                    <input type="text" id="tmpl-title" placeholder="例：日報、出勤連絡">
+                </div>
+                
+                <div class="form-group">
+                    <label>本文</label>
+                    <textarea id="tmpl-body" rows="6" placeholder="定型文の本文..."></textarea>
+                </div>
+
+                <button id="btn-save-tmpl" class="btn-secondary">保存する</button>
+
+                <h3 class="section-title">保存済み定型文</h3>
+                <div id="template-list" class="list-container">
+                    <!-- Templates injected here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- History View -->
+        <main id="view-history" class="view fade-in">
+            <div class="card" style="padding: 1rem;">
+                <h2 style="margin-left: 0.5rem;">送信履歴</h2>
+                <div id="history-list" class="history-container">
+                    <!-- History bubbles injected here -->
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button id="btn-clear-history" class="btn-delete">履歴をすべて消去</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Settings View -->
+        <main id="view-settings" class="view fade-in">
+            <div class="card">
+                <h2>送信設定</h2>
+                
+                <section class="settings-section">
+                    <h3>Yahoo!メール設定</h3>
+                    <div class="form-group">
+                        <label>Yahoo!メールアドレス</label>
+                        <input type="email" id="set-yahoo-email" placeholder="example@yahoo.co.jp">
+                    </div>
+                    <div class="form-group">
+                        <label>アプリパスワード</label>
+                        <input type="password" id="set-yahoo-password" placeholder="アプリパスワードを入力">
+                        <small>通常のログインパスワードではなく、Yahoo!で生成したアプリパスワードを使用してください。</small>
+                    </div>
+                </section>
+                
+                <section class="settings-section">
+                    <h3>メール宛先リスト</h3>
+                    <div class="add-email-row">
+                        <input type="email" id="new-dest-email" placeholder="追加するメールアドレス">
+                        <button id="btn-add-email" class="btn-small">追加</button>
+                    </div>
+                    <ul id="dest-email-list" class="email-list">
+                        <!-- Emails injected here -->
+                    </ul>
+                </section>
+
+                <section class="settings-section">
+                    <h3>LINE設定</h3>
+                    <div class="form-group">
+                        <label>Messaging API アクセストークン</label>
+                        <input type="password" id="set-line-token" placeholder="LINE Channel Access Token">
+                    </div>
+                </section>
+
+                <button id="btn-save-settings" class="btn-secondary">設定を保存</button>
+                <div id="settings-status" class="status-msg"></div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js');
+        });
+      }
+    </script>
+</body>
+</html>
