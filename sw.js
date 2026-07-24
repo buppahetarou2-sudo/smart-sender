@@ -1,4 +1,4 @@
-const CACHE_NAME = 'smart-sender-v1';
+const CACHE_NAME = 'message-sender-v2';
 const urlsToCache = [
   './',
   './index.html',
