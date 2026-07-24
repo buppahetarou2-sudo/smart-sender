@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Home view
     const tmplSelect = document.getElementById('template-select');
     const autoDateToggle = document.getElementById('auto-date-toggle');
+    const subjectSelect = document.getElementById('subject-select');
     const msgSubject = document.getElementById('message-subject');
     const msgBody = document.getElementById('message-body');
     const btnSend = document.getElementById('btn-send');
@@ -69,6 +70,18 @@ document.addEventListener('DOMContentLoaded', () => {
     navBtns.templates.addEventListener('click', () => switchView('templates'));
     navBtns.history.addEventListener('click', () => switchView('history'));
     navBtns.settings.addEventListener('click', () => switchView('settings'));
+
+    // === Subject Logic ===
+    subjectSelect.addEventListener('change', (e) => {
+        if(e.target.value === 'custom') {
+            msgSubject.classList.remove('hidden');
+            msgSubject.value = '';
+            msgSubject.focus();
+        } else {
+            msgSubject.classList.add('hidden');
+            msgSubject.value = e.target.value;
+        }
+    });
 
     // === Date Logic ===
     const getNextDayString = () => {
