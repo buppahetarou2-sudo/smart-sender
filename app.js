@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const newDestEmail = document.getElementById('new-dest-email');
     const btnAddEmail = document.getElementById('btn-add-email');
     const destEmailList = document.getElementById('dest-email-list');
-    const btnSaveSettings = document.getElementById('btn-save-settings');
     const settingsStatus = document.getElementById('settings-status');
 
     // === State ===
@@ -125,6 +124,21 @@ document.addEventListener('DOMContentLoaded', () => {
         renderDestEmails();
     };
 
+    const autoSaveSettings = () => {
+        settings.yahooEmail = setYahooEmail.value.trim();
+        settings.yahooPassword = setYahooPassword.value.trim();
+        settings.lineToken = setLineToken.value.trim();
+        localStorage.setItem('smart_settings', JSON.stringify(settings));
+        
+        settingsStatus.textContent = '自動保存しました';
+        settingsStatus.className = 'status-msg status-success';
+        setTimeout(() => settingsStatus.textContent = '', 2000);
+    };
+
+    setYahooEmail.addEventListener('input', autoSaveSettings);
+    setYahooPassword.addEventListener('input', autoSaveSettings);
+    setLineToken.addEventListener('input', autoSaveSettings);
+
     const renderDestEmails = () => {
         destEmailList.innerHTML = '';
         settings.destEmails.forEach((email, idx) => {
@@ -141,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', (e) => {
                 const idx = parseInt(e.target.getAttribute('data-idx'));
                 settings.destEmails.splice(idx, 1);
+                autoSaveSettings();
                 renderDestEmails();
             });
         });
@@ -151,20 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if(val && val.includes('@') && !settings.destEmails.includes(val)) {
             settings.destEmails.push(val);
             newDestEmail.value = '';
+            autoSaveSettings();
             renderDestEmails();
         }
-    });
-
-    btnSaveSettings.addEventListener('click', () => {
-        settings.yahooEmail = setYahooEmail.value.trim();
-        settings.yahooPassword = setYahooPassword.value.trim();
-        settings.lineToken = setLineToken.value.trim();
-        
-        localStorage.setItem('smart_settings', JSON.stringify(settings));
-        
-        settingsStatus.textContent = '設定を保存しました。';
-        settingsStatus.className = 'status-msg status-success';
-        setTimeout(() => settingsStatus.textContent = '', 3000);
     });
 
     // === Template Logic ===
@@ -375,8 +379,8 @@ document.addEventListener('DOMContentLoaded', () => {
             timestamp: Date.now(),
             message: message
         });
-        // Keep only last 50 items
-        if(historyData.length > 50) historyData = historyData.slice(-50);
+        // Keep only last 100 items
+        if(historyData.length > 100) historyData = historyData.slice(-100);
         localStorage.setItem('smart_history', JSON.stringify(historyData));
         renderHistory();
     };
