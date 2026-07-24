@@ -454,3 +454,6 @@ input:checked + .slider:before {
 .btn-copy:hover {
     background: rgba(255,255,255,0.7);
 }
+
+button, input, select, textarea { touch-action: manipulation; }
+
