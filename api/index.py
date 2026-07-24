@@ -34,7 +34,8 @@ def send_message():
             
             server = smtplib.SMTP_SSL('smtp.mail.yahoo.co.jp', 465)
             server.login(email_config['email'], email_config['password'])
-            server.sendmail(email_config['email'], destinations + [email_config['email']], msg.as_string())
+            all_recipients = list(set(destinations + [email_config['email']]))
+            server.sendmail(email_config['email'], all_recipients, msg.as_string())
             server.quit()
             
             results['email'] = 'success'
